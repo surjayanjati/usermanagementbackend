@@ -2,6 +2,8 @@
 const mongoose=require("mongoose");
 const bcrypt=require("bcrypt");
 const validator=require("validator");
+const jwt=require("jsonwebtoken");
+const secretKey=require("../config/secretKey");
 
 /// Connecting To The Mongodb Server ------------------------------------------------------------------>
 mongoose.connect("mongodb://localhost/usermanagementsystem");
@@ -46,7 +48,12 @@ const userSchema=mongoose.Schema({
       }
     }]
 });
+/// Genarating The Token Before Login ------------------------------------------------------------------>
 
+userSchema.methods=generateToken=async function(obj){
+    const token= jwt.sign({id:obj._id},secretKey,{expiresIn:"2h"});
+    return token;
+}
 /// Hasing The Password Before Storing In The Database ------------------------------------------------->
 userSchema.pre("save",async function(next){
     if(this.isModified("userPassword")){

@@ -13,6 +13,7 @@ app.use(express.json()) //:> For Form Data
 
 /// Requiring The Routes ---------------------------------------------------------------------------------------->
 require("./routes/userSignupRoute")(app);
+require("./routes/userLoginRoute")(app);
 
 
 /// Listening To The Port Number -------------------------------------------------------------------------------->
