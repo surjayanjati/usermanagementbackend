@@ -66,3 +66,26 @@ exports.userEditItem=async(req,res)=>{
         res.send({msg:"Unable To Update The Item",success:false,status:500});
     }
 }
+
+/// Controller When The User Wants to Search A particular Item ------------------------------------------------------------>
+exports.userSearchItem=async(req,res)=>{
+    try {
+        // Objec Destructuring For Getting Values From req Body and middleware__________________/
+        const { _id,userName,userEmail } = req.details;
+        // Getting Values From The Query Params ________________________________________________/
+        
+        const name=req.query.name;
+        
+        if( name!=="" ){
+            
+        const searchResultArray=await itemcollections.find({userId:_id,name:name});
+        
+        if(searchResultArray.length!==0){
+            res.send({msg:"Item Has Been Fetched",success:false,status:200,dataArray:searchResultArray});
+        }else res.send({msg:"This Item Doesn't Exists",success:false,status:500});
+        }else res.send({msg:"Kindly Enter The Details",success:false,status:400});
+    }catch(error){
+        
+        res.send({msg:"This Item Doesn't Exists",success:false,status:500});
+    }
+}

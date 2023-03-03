@@ -19,4 +19,9 @@ module.exports=(app)=>{
     
     // Signup Page Post Request Route For Updating The Item
     app.put("/usermanagementsystem/api/v1/users/edititems",authCheck.tokenCheck,authCheck.roleCheck, userCurdController.userEditItem);
+
+    
+    
+    // Signup Page Post Request Route For User To Search an Item
+    app.get("/usermanagementsystem/api/v1/users/searchitems",authCheck.tokenCheck,authCheck.roleCheck, userCurdController.userSearchItem);
 }
