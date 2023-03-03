@@ -1,5 +1,6 @@
 // Requiring The Collection From The Model --------------------------------->
 const userCollection=require("../model/userModel");
+const itemcollections=require("../model/itemsModel");
 
 
 
@@ -11,8 +12,16 @@ exports.userAddItem=async(req,res)=>{
         // Getting Values From The request Body ________________________________________________/
         const {id,name,price,description}=req.body;
         if(id!==""&& name!=="" && price!=="" && description!==""){
-        const pushResult=await userCollection.updateOne({_id:_id},{$push:{itemsArray:{id:id,name:name,price:price,description:description}}});
-        if(pushResult.acknowledged===true){
+        const newData=itemcollections({
+            userName:userName,
+            userId:_id,
+            itemId:id,
+            name:name,
+            price:price,
+            description:description
+        });
+        const saveResult=await newData.save();
+        if(saveResult!==null){
             res.send({msg:"New Item Has Been Added",success:false,status:200});
         }else res.send({msg:"Unable To Add The Item",success:false,status:500});
         }else res.send({msg:"Kindly Enter All The Details",success:false,status:400});
@@ -28,8 +37,8 @@ exports.userDeleteItem=async(req,res)=>{
         // Getting Values From The request Body ________________________________________________/
         const id=req.body.id;
         if(id!==""){
-        const pushResult=await userCollection.updateOne({_id:_id},{$pull:{itemsArray:{id:id}}});
-        if(pushResult.acknowledged===true){
+        const deleteResult=await itemcollections.deleteOne({userId:_id,itemId:id});
+        if(deleteResult.acknowledged===true){
             res.send({msg:"Item Has Been Deleted",success:false,status:200});
         }else res.send({msg:"Unable To Delete The Item",success:false,status:500});
         }else res.send({msg:"Unable To Delete The Item",success:false,status:400});
@@ -46,8 +55,8 @@ exports.userEditItem=async(req,res)=>{
         const {id,name,price,description}=req.body;
         if(id!=="" && name!=="" && price !=="" && description!==""){
             
-        const editResult=await userCollection.updateOne({_id:_id,"itemsArray.id":id},{$set:{id:id,name:name,price:price,description:description}});
-        console.log(editResult);
+        const editResult=await itemcollections.updateMany({userId:_id,itemId:id},{$set:{id:id,name:name,price:price,description:description}});
+        
         if(editResult.acknowledged===true){
             res.send({msg:"Item Has Been Updated",success:false,status:200});
         }else res.send({msg:"Unable To Update The Item",success:false,status:500});
