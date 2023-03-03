@@ -1,0 +1,22 @@
+{
+  "name": "usermanagementbackend",
+  "version": "1.0.0",
+  "description": "This is The Backend Part of User Management System ( Made with Nodejs,Mongodb)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/surjayanjati/usermanagementbackend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/surjayanjati/usermanagementbackend/issues"
+  },
+  "homepage": "https://github.com/surjayanjati/usermanagementbackend#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
