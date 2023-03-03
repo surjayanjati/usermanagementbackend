@@ -1,6 +1,7 @@
 /// Requiring The Pakages/ Modules--------------------------------------------------------------------->
 const mongoose=require("mongoose");
-
+const bcrypt=require("bcrypt");
+const validator=require("validator");
 
 /// Connecting To The Mongodb Server ------------------------------------------------------------------>
 mongoose.connect("mongodb://localhost/usermanagementsystem");
@@ -19,13 +20,17 @@ const userSchema=mongoose.Schema({
         required:true,
         index:true,
         unique:true,
+        validate:(value)=>{
+            if(!validator.isEmail(value)){
+                throw new Error("Invalid Email")
+            }
+        }
     },
-    userId:{
-        type:Number,
+    userPassword:{
+        type:String,
         required:true,
-        index:true,
-        unique:true,
     },
+ 
     itemsArray:[{
       id:{
         type:Number
@@ -41,6 +46,14 @@ const userSchema=mongoose.Schema({
       }
     }]
 });
+
+/// Hasing The Password Before Storing In The Database ------------------------------------------------->
+userSchema.pre("save",async function(next){
+    if(this.isModified("userPassword")){
+        this.userPassword=await bcrypt.hash(this.userPassword,8);
+    };
+    next();
+})
 
 /// Exporting The Mongoose Model ----------------------------------------------------------------------->
 module.exports=mongoose.model("usercollections",userSchema);
