@@ -24,4 +24,8 @@ module.exports=(app)=>{
     
     // Signup Page Post Request Route For User To Search an Item
     app.get("/usermanagementsystem/api/v1/users/searchitems",authCheck.tokenCheck,authCheck.roleCheck, userCurdController.userSearchItem);
+
+    
+    // Signup Page Post Request Route For User To Search an Item
+    app.get("/usermanagementsystem/api/v1/users/searchallitems",authCheck.tokenCheck,authCheck.roleCheck, userCurdController.userSearchAllItem);
 }

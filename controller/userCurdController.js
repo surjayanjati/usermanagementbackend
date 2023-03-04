@@ -10,12 +10,13 @@ exports.userAddItem=async(req,res)=>{
         // Objec Destructuring For Getting Values From req Body and middleware__________________/
         const { _id,userName,userEmail } = req.details;
         // Getting Values From The request Body ________________________________________________/
-        const {id,name,price,description}=req.body;
-        if(id!==""&& name!=="" && price!=="" && description!==""){
+        const {itemId,name,price,description}=req.body;
+        console.log(req.body);
+        if(itemId!==""&& name!=="" && price!=="" && description!==""){
         const newData=itemcollections({
             userName:userName,
             userId:_id,
-            itemId:id,
+            itemId:itemId,
             name:name,
             price:price,
             description:description
@@ -35,11 +36,12 @@ exports.userDeleteItem=async(req,res)=>{
         // Objec Destructuring For Getting Values From req Body and middleware__________________/
         const { _id,userName,userEmail } = req.details;
         // Getting Values From The request Body ________________________________________________/
-        const id=req.body.id;
-        if(id!==""){
-        const deleteResult=await itemcollections.deleteOne({userId:_id,itemId:id});
+        const itemId=req.body.itemId;
+        console.log(itemId);
+        if(itemId!==""){
+        const deleteResult=await itemcollections.deleteOne({userId:_id,itemId:itemId});
         if(deleteResult.acknowledged===true){
-            res.send({msg:"Item Has Been Deleted",success:false,status:200});
+            res.send({msg:"Item Has Been Deleted",success:true,status:200});
         }else res.send({msg:"Unable To Delete The Item",success:false,status:500});
         }else res.send({msg:"Unable To Delete The Item",success:false,status:400});
     }catch(error){
@@ -88,4 +90,26 @@ exports.userSearchItem=async(req,res)=>{
         
         res.send({msg:"This Item Doesn't Exists",success:false,status:500});
     }
-}
+};
+
+/// Controller When The User Wants to Search A particular Item ------------------------------------------------------------>
+exports.userSearchAllItem=async(req,res)=>{
+    try {
+        // Objec Destructuring For Getting Values From req Body and middleware__________________/
+        const { _id,userName,userEmail } = req.details;
+        // Getting Values From The Query Params ________________________________________________/
+        
+       
+            
+        const searchResultArray=await itemcollections.find({userId:_id});
+        
+        if(searchResultArray.length!==0){
+            res.send({msg:"Item Has Been Fetched",success:false,status:200,dataArray:searchResultArray});
+        }else res.send({msg:"This Item Doesn't Exists",success:false,status:500});
+       
+    }catch(error){
+        
+        res.send({msg:"This Item Doesn't Exists",success:false,status:500});
+    }
+};
+
