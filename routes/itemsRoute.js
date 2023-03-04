@@ -9,20 +9,24 @@ const authCheck=require("../middleware/authCheck");
 module.exports=(app)=>{
 
     // Signup Page Post Request Route For Creating new Data
-    app.post("/usermanagementsystem/api/v1/users/additems",authCheck.tokenCheck,authCheck.roleCheck, itemsController.userAddItem);
+    app.post("/usermanagementsystem/api/v1/users/items",authCheck.tokenCheck,authCheck.roleCheck, itemsController.userAddItem);
 
     
     // Signup Page Post Request Route For Deleting New Item
-    app.delete("/usermanagementsystem/api/v1/users/deleteitems",authCheck.tokenCheck,authCheck.roleCheck, itemsController.userDeleteItem);
+    app.delete("/usermanagementsystem/api/v1/users/items",authCheck.tokenCheck,authCheck.roleCheck, itemsController.userDeleteItem);
 
     
     
     // Signup Page Post Request Route For Updating The Item
-    app.put("/usermanagementsystem/api/v1/users/edititems",authCheck.tokenCheck,authCheck.roleCheck, itemsController.userEditItem);
+    app.put("/usermanagementsystem/api/v1/users/items",authCheck.tokenCheck,authCheck.roleCheck, itemsController.userEditItem);
 
     
     
     // Signup Page Post Request Route For User To Search an Item
     app.get("/usermanagementsystem/api/v1/users/items",authCheck.tokenCheck,authCheck.roleCheck, itemsController.getItems);
+
+    
+    // Signup Page Post Request Route For User To Search an Item
+    app.get("/usermanagementsystem/api/v1/users/allitems",authCheck.tokenCheck,authCheck.roleCheck, itemsController.getAllItems);
 
 }

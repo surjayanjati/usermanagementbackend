@@ -11,7 +11,7 @@ exports.userAddItem=async(req,res)=>{
         const { _id,userName,userEmail } = req.details;
         // Getting Values From The request Body ________________________________________________/
         const {itemId,name,price,description}=req.body;
-        console.log(req.body);
+        
         if(itemId!==""&& name!=="" && price!=="" && description!==""){
         const newData=itemcollections({
             userName:userName,
@@ -23,7 +23,7 @@ exports.userAddItem=async(req,res)=>{
         });
         const saveResult=await newData.save();
         if(saveResult!==null){
-            res.send({msg:"New Item Has Been Added",success:false,status:200});
+            res.send({msg:"New Item Has Been Added",success:true,status:200});
         }else res.send({msg:"Unable To Add The Item",success:false,status:500});
         }else res.send({msg:"Kindly Enter All The Details",success:false,status:400});
     }catch(error){
@@ -97,3 +97,22 @@ exports.getItems = async (req, res) => {
     }
 };
 
+
+/// Controller When The User Wants to Download all Data in CSV ------------------------------------------------------------>
+exports.getAllItems = async (req, res) => {
+    try {
+        
+        
+        const { _id } = req.details;
+
+        
+       
+        const searchResultArray = await itemcollections.find({userId:_id});
+
+        res.send({ msg: "Items Has Been Fetched", success: true, status: 200, dataArray: searchResultArray });
+
+    } catch (error) {
+        console.log(error)
+        res.send({ msg: "This Item Doesn't Exists", success: false, status: 500 });
+    }
+};
