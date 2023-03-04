@@ -23,9 +23,6 @@ module.exports=(app)=>{
     
     
     // Signup Page Post Request Route For User To Search an Item
-    app.get("/usermanagementsystem/api/v1/users/searchitems",authCheck.tokenCheck,authCheck.roleCheck, itemsController.userSearchItem);
+    app.get("/usermanagementsystem/api/v1/users/items",authCheck.tokenCheck,authCheck.roleCheck, itemsController.getItems);
 
-    
-    // Signup Page Post Request Route For User To Search an Item
-    app.get("/usermanagementsystem/api/v1/users/searchallitems",authCheck.tokenCheck,authCheck.roleCheck, itemsController.userSearchAllItem);
 }

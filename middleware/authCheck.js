@@ -9,6 +9,7 @@ const userCollection=require("../model/userModel");
 /// Function For Checking Whether The Token is exists and it has Some id in it or not--------------------------------->
 function tokenCheck(req,res,next){
   try {
+   
     const token=req.headers["access-token"];
     if(token!=="" && token!==undefined){
     jwt.verify(token,secretKey,(err,decode)=>{

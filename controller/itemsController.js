@@ -70,46 +70,30 @@ exports.userEditItem=async(req,res)=>{
 }
 
 /// Controller When The User Wants to Search A particular Item ------------------------------------------------------------>
-exports.userSearchItem=async(req,res)=>{
+exports.getItems = async (req, res) => {
     try {
-        // Objec Destructuring For Getting Values From req Body and middleware__________________/
-        const { _id,userName,userEmail } = req.details;
-        // Getting Values From The Query Params ________________________________________________/
         
-        const name=req.query.name;
-        
-        if( name!=="" ){
-            
-        const searchResultArray=await itemcollections.find({userId:_id,name:name});
-        
-        if(searchResultArray.length!==0){
-            res.send({msg:"Item Has Been Fetched",success:true,status:200,dataArray:searchResultArray});
-        }else res.send({msg:"This Item Doesn't Exists",success:false,status:500});
-        }else res.send({msg:"Kindly Enter The Details",success:false,status:400});
-    }catch(error){
-        
-        res.send({msg:"This Item Doesn't Exists",success:false,status:500});
-    }
-};
+        const limit = 5;
+        const { _id } = req.details;
 
-/// Controller When The User Wants to Search A particular Item ------------------------------------------------------------>
-exports.userSearchAllItem=async(req,res)=>{
-    try {
-        // Objec Destructuring For Getting Values From req Body and middleware__________________/
-        const { _id,userName,userEmail } = req.details;
-        // Getting Values From The Query Params ________________________________________________/
-        
-       
-            
-        const searchResultArray=await itemcollections.find({userId:_id});
-        
-        if(searchResultArray.length!==0){
-            res.send({msg:"Item Has Been Fetched",success:true,status:200,dataArray:searchResultArray});
-        }else res.send({msg:"This Item Doesn't Exists",success:false,status:500});
-       
-    }catch(error){
-        
-        res.send({msg:"This Item Doesn't Exists",success:false,status:500});
+        const queryObj = { userId: _id };
+        if (req.query.searchKeyword) {
+            const keyword = req.query.searchKeyword;
+            queryObj.$or = [{ name: RegExp(keyword, 'i') }, { description: RegExp(keyword, 'i') }];
+        }
+
+        const sortObj = { };
+        if(req.query.sort){
+            const values = req.query.sort.split(" ");
+            sortObj[values[0]] = values[1] == 'asc' ? 1 : -1;
+        }
+        const searchResultArray = await itemcollections.find(queryObj).sort(sortObj).skip((req.query.page - 1) * limit).limit(limit);
+
+        res.send({ msg: "Item Has Been Fetched", success: true, status: 200, dataArray: searchResultArray });
+
+    } catch (error) {
+        console.log(error)
+        res.send({ msg: "This Item Doesn't Exists", success: false, status: 500 });
     }
 };
 
