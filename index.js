@@ -12,9 +12,9 @@ app.use(express.json()) //:> For Form Data
 
 
 /// Requiring The Routes ---------------------------------------------------------------------------------------->
-require("./routes/userSignupRoute")(app);
-require("./routes/userLoginRoute")(app);
-require("./routes/userCurdRoute")(app);
+require("./routes/userRoute")(app);
+
+require("./routes/itemsRoute")(app);
 
 /// Listening To The Port Number -------------------------------------------------------------------------------->
 app.listen(7890,()=>{

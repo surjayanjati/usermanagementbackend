@@ -60,7 +60,7 @@ exports.userEditItem=async(req,res)=>{
         const editResult=await itemcollections.updateMany({userId:_id,itemId:id},{$set:{id:id,name:name,price:price,description:description}});
         
         if(editResult.acknowledged===true){
-            res.send({msg:"Item Has Been Updated",success:false,status:200});
+            res.send({msg:"Item Has Been Updated",success:true,status:200});
         }else res.send({msg:"Unable To Update The Item",success:false,status:500});
         }else res.send({msg:"Kindly Enter All The Details",success:false,status:400});
     }catch(error){
@@ -83,7 +83,7 @@ exports.userSearchItem=async(req,res)=>{
         const searchResultArray=await itemcollections.find({userId:_id,name:name});
         
         if(searchResultArray.length!==0){
-            res.send({msg:"Item Has Been Fetched",success:false,status:200,dataArray:searchResultArray});
+            res.send({msg:"Item Has Been Fetched",success:true,status:200,dataArray:searchResultArray});
         }else res.send({msg:"This Item Doesn't Exists",success:false,status:500});
         }else res.send({msg:"Kindly Enter The Details",success:false,status:400});
     }catch(error){
@@ -104,7 +104,7 @@ exports.userSearchAllItem=async(req,res)=>{
         const searchResultArray=await itemcollections.find({userId:_id});
         
         if(searchResultArray.length!==0){
-            res.send({msg:"Item Has Been Fetched",success:false,status:200,dataArray:searchResultArray});
+            res.send({msg:"Item Has Been Fetched",success:true,status:200,dataArray:searchResultArray});
         }else res.send({msg:"This Item Doesn't Exists",success:false,status:500});
        
     }catch(error){
